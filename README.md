@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MedCompliance AI
 
-## Getting Started
+Healthcare compliance training MVP built with:
+- Next.js 16 (App Router)
+- Supabase (Auth + Postgres + RLS)
 
-First, run the development server:
+## What Is Implemented
+
+- Email/password authentication (sign up, sign in, sign out)
+- Auth callback flow at `/auth/callback`
+- Auto profile onboarding trigger on `auth.users`
+- Protected dashboard at `/dashboard`
+- Role-aware module creation (manager roles only)
+- Self-assignment flow for modules
+- Completion flow that issues certifications
+- Notifications and audit logs
+- Health endpoint at `/api/health`
+
+## 1. Environment Setup
+
+Create local env file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.local.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (or anon key)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional fallback)
+- `NEXT_PUBLIC_SITE_URL` (for email confirmation redirect URL, e.g. `http://localhost:3000`)
+- `SUPABASE_SERVICE_ROLE_KEY` (optional)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Supabase Auth settings (Dashboard -> Authentication -> URL Configuration):
+- Site URL: your current app URL (for local: `http://localhost:3000`)
+- Additional Redirect URLs: include `http://localhost:3000/auth/callback`
+- If you run dev on another port, also add that callback URL (for example `http://localhost:3001/auth/callback`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 2. Supabase Migration + Seed
 
-## Learn More
+```bash
+npx supabase login
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push --linked --include-seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 3. Run Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open:
+- `http://localhost:3000`
+- `http://localhost:3000/api/health`
 
-## Deploy on Vercel
+## 4. Core Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/` Landing page
+- `/auth/sign-in` Sign in
+- `/auth/sign-up` Sign up
+- `/auth/callback` Auth callback
+- `/dashboard` Protected compliance dashboard
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 5. Deployment Checks
+
+```bash
+npm run lint
+npm run build
+```

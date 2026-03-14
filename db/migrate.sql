@@ -1,0 +1,12 @@
+-- ============================================================
+-- MedCompliance AI - Migration Runbook (Supabase SQL Editor)
+-- ============================================================
+-- Run these files in order for a clean rebuild:
+--   1) db/reset.sql
+--   2) db/schema.sql
+--   3) db/seed.sql
+--
+-- Notes:
+-- - reset.sql drops all app tables/functions/triggers so you can recreate from scratch.
+-- - schema.sql creates extensions, tables, functions, triggers, indexes, and RLS policies.
+-- - seed.sql inserts baseline org/modules/questions and starter user data.
