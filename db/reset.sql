@@ -16,6 +16,9 @@ drop function if exists public.current_org_id() cascade;
 drop function if exists public.current_user_role() cascade;
 drop function if exists public.is_org_manager() cascade;
 drop function if exists public.healthcheck() cascade;
+drop function if exists public.normalize_org_slug(text) cascade;
+drop function if exists public.resolve_signup_organization(text) cascade;
+drop function if exists public.provision_signup_organization(text, text) cascade;
 
 -- Drop tables (children before parents)
 
